@@ -1,0 +1,22 @@
+# Entorno virtual / uv
+.venv/
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Salida generada por scripts/transcribir.py y scripts/gui.py
+transcripciones/*
+!transcripciones/.gitkeep
+
+# Audios (no versionar el contenido, solo el código)
+*.mp3
+*.wav
+*.m4a
+*.ogg
+*.flac
+*.opus
+
+# Editores / OS
+.DS_Store
