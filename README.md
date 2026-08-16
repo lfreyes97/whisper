@@ -81,14 +81,32 @@ Requiere las librerías de sistema GTK4 y libadwaita (en la mayoría de distros 
 
 Permite elegir carpeta o archivo de entrada, carpeta de salida, modelo, dispositivo, idioma, formato y beam size con controles gráficos; muestra una barra de progreso total y otra del archivo en curso, se puede cancelar a medio proceso, y al terminar deja una lista con el resultado (ok/error) de cada audio. Corre la transcripción en un hilo aparte para no congelar la ventana.
 
+## App web (Streamlit)
+
+Una tercera alternativa, en el navegador:
+
+```bash
+uv run streamlit run scripts/app_streamlit.py
+```
+
+Abre `http://localhost:8501`. Tiene las mismas opciones que la CLI en la barra lateral (modelo, dispositivo, idioma, formato, beam size, regenerar existentes) y dos formas de indicar la entrada:
+
+- **Carpeta local**: escribes una ruta del propio equipo (default `~/Música`), igual que la CLI.
+- **Subir archivos**: arrastras uno o más audios desde el navegador (útil si corres la app en otra máquina).
+
+Al transcribir muestra barra de progreso total y del archivo en curso, una tabla con el resultado de cada audio, y un botón de descarga por archivo transcrito (además de guardarlo en la carpeta de salida, igual que la CLI/GUI). El modelo se cachea entre corridas (`st.cache_resource`) para no recargarlo en cada clic.
+
+A diferencia de la GUI de escritorio, aquí no hay botón de cancelar a medio proceso — es una limitación del modelo de ejecución de Streamlit (el script corre de un tirón por cada interacción); para cortar una corrida larga, cierra la pestaña o detén el proceso (`Ctrl+C` en la terminal donde corre `streamlit run`).
+
 ## Estructura del proyecto
 
 ```
 scripts/
-  core.py         # lógica de transcripción compartida (CLI + GUI)
-  transcribir.py  # CLI de transcripción
-  gui.py          # GUI GTK4 + libadwaita
-  setup_cuda.sh   # symlinks de librerías CUDA para ctranslate2
+  core.py           # lógica de transcripción compartida (CLI + GUI + app web)
+  transcribir.py    # CLI de transcripción
+  gui.py            # GUI de escritorio, GTK4 + libadwaita
+  app_streamlit.py  # app web, Streamlit
+  setup_cuda.sh     # symlinks de librerías CUDA para ctranslate2
 notebooks/
   stt_example.ipynb  # notebook exploratorio paso a paso con faster-whisper
 transcripciones/   # salida de las transcripciones
